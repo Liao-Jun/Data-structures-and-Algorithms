@@ -1,63 +1,41 @@
-#include <iostream>
-#include <stack>
-#include <string>
-#include <map>
+#include<bits/stdc++.h>
 using namespace std;
-
-map<char, pair<int, int>> M;
-
-int main(){
-    ios::sync_with_stdio(false);
-    int n;
-    cin >> n;
-    char c;
-    int a,b;
-    for(int i=0;i<n;i++){
-        cin >> c >> a >> b; 
-        M.insert(pair<char, pair<int, int>>(c,pair<int, int>(a,b)));
-    }
-    string s;
-    stack<char> p;
-    int sum = 0;
-    int count = 0;
-    int flag = 0;
-    while(cin >> s){
-        if(s.length()==1){
-            cout << '0' << endl;
-            continue;
-        }else{
-            for(int i=0;i<s.length();i++){
-                p.push(s[i]);
-                if(p.top()==')'){
-                    p.pop();
-                    char j = p.top();
-                    p.pop();
-                    char k = p.top();
-                    p.pop();
-                    p.pop();
-                    if(M[k].second != M[j].first){
-                        cout << "error" <<endl;
-                        flag = 1;
-                        break;
-                    }else{
-                        sum += M[k].first*M[k].second*M[j].second;
-                        M.insert(pair<char, pair<int, int>>(char(count), pair<int, int>(M[k].first, M[j].second)));
-                        count++;
-                    }
-                }
+int n, a, b;
+char ch;
+map<char, pair<int,int> > mp; // 矩阵->（行数，列数）
+int simu(string s) { // 模拟相乘过程，错误返回-1，否则返回次数
+    int ans = 0;
+    stack<pair<int,int> > stk; // 矩阵栈，第一二维
+    bool isErr=false; // 标记是否有错误
+    for (auto c : s) {
+        if (isalpha(c)) stk.push(mp[c]); // 矩阵
+        if (c == ')') { // 出栈计算
+            auto p1 = stk.top(); stk.pop();
+            auto p2 = stk.top(); stk.pop();
+            if (p2.second != p1.first) { // 错误
+                isErr = true;
+                break;
             }
-            if(flag == 1){
-                flag = 0;
-                continue;
-            }
-            cout << sum << endl;
-            sum = 0;
-            count = 0;
-            while(!p.empty()){
-                p.pop();
-            }
+            ans += p2.first*p2.second*p1.second; // 运算次数
+            stk.push({p2.first, p1.second}); // 重新压入
         }
     }
-
+    return ans = (isErr) ? -1 : ans;
+}
+int main() {
+    scanf("%d", &n);
+    while (n --) {
+        getchar();
+        scanf("%c %d %d", &ch, &a, &b);
+        mp[ch] = {a,b};
+    }
+    string s;
+    while (cin >>s) {
+        int ans = simu(s);
+        if (ans == -1) puts("error");
+        else printf("%d\n", ans);
+    }
     return 0;
 }
+
+//https://vjudge.net/problem/UVA-442
