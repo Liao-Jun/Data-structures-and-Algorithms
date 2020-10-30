@@ -1,120 +1,66 @@
-#include <iostream>
-#include <queue>
-#include <string>
-#include <vector>
-#include <map>
+#include<bits/stdc++.h>
 using namespace std;
-
-int main(){
-    int t;
-    cin >> t;
-    while(t--){
-        int a[7+5];
-        for(int i=0;i<7;i++){
-            cin >> a[i];
+int T, a[7]; // 测试用例个数，a[0-6]分别表示输入的7个数
+string s, ans;
+int main() {
+    cin >>T;
+    for (int i = 0; i < T; i ++) {
+        for (int j = 0; j < 7; j ++) scanf("%d", &a[j]);
+        getchar(); // 吸收多余字符
+        queue<string> q1[a[0]]; deque<int> qr; queue<int> qb; // 每个程序对应指令；ready；阻塞
+        for (int j = 0; j < a[0]; j ++) { // n个程序
+            while (getline(cin, s) && s != "end") q1[j].push(s);
+            qr.push_back(j);
         }
-        getchar();
-        queue<string> q[1000+5];
-        deque<int> q1;
-        queue<int> q2;
-        int sum = 0;
-        for(int i=0;i<a[0];i++){
-            string s;
-            while(getline(cin, s)){
-                if(s[2] == 'd'){
-                    sum++;
-                    q[sum-1].push(s);
-                    q1.push_back(sum-1);
-                    break;
+        if (i != 0) puts(""); // 连续输出的空行
+        map<string, string> vmp; // 变量对应的值
+        bool isLock = false; // 标记是否有锁
+        while (!qr.empty()) { // 等待队列非空
+            int t = 0, k = qr.front(); qr.pop_front(); // 耗费时间，当前程序编号
+            bool isBlock = false; // 标记是否发生阻塞
+            while (t < a[6] && !q1[k].empty()) { // 未超时
+                s = q1[k].front(); // 取出第一条命令
+                int j = s.find('=');
+                if (j != string::npos) { // 赋值
+                    vmp[s.substr(0,j-1)] = s.substr(j+2);
+                    t += a[1]; // 计时
                 }
-                q[sum].push(s);
-            }
-        }
-        map<char, char> m;
-        int time = a[6];
-        int Lock = 0;
-        while(!q1.empty()){
-            int a1 = q1.front();
-            if(q[a1].front()[2] == '='){
-                if(m.find(q[a1].front()[0]) == m.end()){
-                    m[q[a1].front()[0]] == q[a1].front()[4];
-                }
-                m.insert(pair<char, char>(q[a1].front()[0],q[a1].front()[4]));
-                q[a1].pop();
-                time = time - a[1];
-                if(time == 0){
-                    if(!q[a1].empty()){
-                        q1.pop_front();
-                        q1.push_back(a1);
-                    }else{
-                        q1.pop_front();
+                else {
+                    j = s.find(' ');
+                    if (j != string::npos) { // 打印输出
+                        ans = "0"; // 初始化
+                        if (vmp[s.substr(j+1)] != "") ans = vmp[s.substr(j+1)];  
+                        printf("%d: %s\n", k+1, ans.c_str()); // print val
+                        t += a[2];
                     }
-                    time = a[0];
-                }
-                for(auto it=m.begin();it!=m.end();++it){//dubug
-                    cout << "??" << it->first << it->second << endl;//debug
-                }//debug
-            }else if(q[a1].front()[0] == 'p'){
-                cout << a1+1 << ": " << m[q[a1].front()[6]] << endl;
-                q[a1].pop();
-                time = time - a[2];
-                if(time == 0){
-                    if(!q[a1].empty()){
-                        q1.pop_front();
-                        q1.push_back(a1);
-                    }else{
-                        q1.pop_front();
-                    }
-                    time = a[0];
-                }
-            }else if(q[a1].front()[0] == 'l'){
-                if(Lock == 0){
-                    Lock++;
-                    q[a1].pop();
-                    time = time -a[3];
-                    if(time == 0){
-                        if(!q[a1].empty()){
-                            q1.pop_front();
-                            q1.push_back(a1);
-                        }else{
-                            q1.pop_front();
+                    else {
+                        if (s[0] == 'l') { // lock
+                            if (!isLock) { // 未有锁定
+                                isLock = true;
+                                t += a[3]; // 时间增加
+                            }
+                            else { // 已有锁定
+                                qb.push(k); // 加入阻塞队列尾部
+                                isBlock = true;
+                                break; // 直接退出，忽略其它剩余时间
+                            }
                         }
-                        time = a[0];
-                    }
-                }else if(Lock == 1){
-                    q[a1].pop();
-                    q1.pop_front();
-                    q2.push(a1);
-                    time = time - a[3];
-                    if(time == 0){
-                        time = a[0];
+                        else if (s[0] == 'u') { // unlock
+                            isLock = false; // 标记未锁定
+                            if (!qb.empty()) { // 阻塞非空
+                                qr.push_front(qb.front()); // 阻塞头部加入ready头部
+                                qb.pop();
+                            }
+                            t += a[4];
+                        }
                     }
                 }
-            }else if(q[a1].front()[0] == 'u'){
-                int b = q2.front();
-                q2.pop();
-                q1.push_front(b);
-                q[a1].pop();
-                time = time - a[4];
-                if(time == 0){
-                    if(!q[a1].empty()){
-                        q1.pop_front();
-                        q1.push_back(a1);
-                    }else{
-                        q1.pop_front();
-                    }
-                    time = a[0];
-                }
-            }else if(q[a1].front()[0] == 'e'){
-                q1.pop_front();
-                q[a1].pop();
-                time = time -a[5];
-                if(time == 0){
-                    time = a[0];
-                }
+                q1[k].pop(); // 确保阻塞时lock命令不会被删除
             }
+            if (!q1[k].empty() && !isBlock) qr.push_back(k); // 非空再次加入等待队列尾部
         }
     }
-
     return 0;
 }
+
+//https://vjudge.net/problem/UVA-210

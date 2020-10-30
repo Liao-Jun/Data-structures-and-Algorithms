@@ -3,6 +3,7 @@
         "*.cpp": "cpp",
         "xstring": "cpp",
         "ostream": "cpp",
-        "algorithm": "cpp"
+        "algorithm": "cpp",
+        "deque": "cpp"
     }
 }
