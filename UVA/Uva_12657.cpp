@@ -18,7 +18,7 @@ int main(){
         int flag,a,b;
         int re = -1;
         for(int i=0;i<m;i++){
-            cin >> flag;
+            scanf("%d",&flag);
             if(flag==4){
                 re = -1*re;
             }else if(flag==3){
@@ -38,20 +38,14 @@ int main(){
                 p[a] = l.insert(y, a);
             }
         }
-        long long int sum = 0;
-        if(re==-1){
-            for(auto it=l.begin(); it!=l.end();it++,it++){
-                sum += *it;
-            }
-            cout << "Case " << k++ << ": ";
-            cout << sum << endl;
-        }else{
-            for(list<int>::reverse_iterator it=l.rbegin(); it!=l.rend();++it,++it){
-                sum += *it;
-            }
-            cout << "Case " << k++ << ": ";
-            cout << sum << endl;
+        long long int count = 1,sum = 0;
+        for(auto it =l.begin();it!=l.end();++it,++count){
+            if(count%2 ==1)sum+=*it;
         }
+        if(re==1){
+            sum = 1ll*(n+1)*n/2 - sum;
+        }
+        printf("Case %d: %lld\n",k++,sum);
     }
 
     return 0;
