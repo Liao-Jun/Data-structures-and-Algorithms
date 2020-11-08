@@ -1,59 +1,79 @@
 #include <iostream>
-#include <unordered_map>
 #include <string>
 using namespace std;
 
-int t;
-int n;
-int x,y;
-int graph[30][30];
-int g[30];
+int t,n;
 string s;
+int graph[26][26];
+int in[26];
+int out[26];
+bool v[26];
 
-bool dfs(int s){
-    for(int i;i<26;i++){
-        if(graph[s][i]==1&&s!=i){
-            if(i==y){
-                return true;
-            }else{
-                return dfs(i);
-            }
-        }
+void dfs(int k){
+    v[k] = true;
+    for(int i=0;i<26;i++){
+        if(graph[k][i]&&!v[i]) dfs(i);
     }
-    return false;
 }
 
 int main(){
     cin >> t;
     while(t--){
         cin >> n;
-        fill(graph[0],graph[0]+30*30, 0);
-        fill(g,g+30,0);
+        fill(graph[0],graph[0]+26*26,0);
+        fill(in,in+26,0);
+        fill(out,out+26,0);
+        fill(v,v+26,false);
         for(int i=0;i<n;i++){
             cin >> s;
-            g[s[0]-'a'] --;
-            g[s[s.length()-1]-'a'] ++;
-            graph[s[0]-'a'][s[s.length()-1]-'a'] = 1;
+            int a = s[0]-'a';
+            int b = s[s.length()-1]-'a';
+            graph[a][b] = 1;
+            out[a] ++;
+            in[b] ++;
         }
-        int flag = 0;
-        int flag1 = 0;
-        for(int i=0;i<30;i++){
-            if(!(g[i]==0||g[i]==1||g[i]==-1)) {
-                flag = 2;
-                break;
-            }
-            if(g[i]==-1){
-                flag++;
-                x = i;
-            }
-            if(g[i]==1){
-                flag1++;
-                y = i;
+        bool flag = true;
+        int a=0,b=0;
+        for(int i=0;i<26;i++){
+            if(in[i]!=out[i]){
+                if(in[i]==out[i]+1) a++;
+                else if(in[i]+1==out[i]) b++;
+                else{
+                    flag = false;
+                    break;
+                }
             }
         }
-        if(flag==2) cout << "The door cannot be opened.\n";
-        else if(flag<=1&&flag1<=1){
-            if(dfs(x)){
+        if(a&&b&&a+b>2) flag = false;
+        if(flag){
+            if(a+b==2){
+                for(int i=0;i<26;i++){
+                    if(out[i]&&(out[i]-in[i])==1){
+                        dfs(i);
+                        break;
+                    }
+                }
+            }else{
+                for(int i=0;i<26;i++){
+                    if(out[i]){
+                        dfs(i);
+                        break;
+                    }
+                }
+            }
+            bool flag1 = true;
+            for(int i=0;i<26;i++){
+                if(out[i]&&!v[i]){
+                    flag1 = false;
+                    cout <<i;
+                    break;
+                }
+                if(in[i]&&!v[i]){
+                    flag1 = false;
+                    break;
+                }
+            }
+            if(flag1){
                 cout << "Ordering is possible.\n";
             }else{
                 cout << "The door cannot be opened.\n";
@@ -62,7 +82,7 @@ int main(){
             cout << "The door cannot be opened.\n";
         }
     }
-
+    
     return 0;
 }
 
