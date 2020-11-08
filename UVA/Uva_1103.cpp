@@ -10,14 +10,14 @@ map<char, string> Change = {{'1',"0001"},{'2',"0010"},{'0',"0000"},{'3',"0011"},
                              {'6',"0110"},{'7',"0111"},{'8',"1000"},{'9',"1001"},{'a',"1010"},{'b',"1011"},
                              {'c',"1100"},{'d',"1101"},{'e',"1110"},{'f',"1111"}};
 map<int, char> dic = {{1,'A'},{3,'J'},{5,'D'},{4,'S'},{0,'W'},{2,'K'}};
-int d[4][2] = {{1,0},{-1,0},{0,1},{0-1}};
+int d[4][2] = {{-1,0},{0,-1},{1,0},{0,1}};
 
 void dfs(int x1, int y1){
     x[x1][y1] = '4';
     for(int i=0;i<4;i++){
         int x2 = x1+d[i][0];
         int y2 = y1+d[i][1];
-        if(x2>=0&&x2<h+2&&y2>=0&&y2<x[0].length()&&x[x2][y2]=='0'){
+        if(x2>=0 && x2<h+2 && y2>=0 && y2<x[0].length() && x[x2][y2]=='0'){
             dfs(x2,y2);
         }
     }
@@ -25,6 +25,7 @@ void dfs(int x1, int y1){
 
 void dfs2(int x1, int y1,char ch){
     x[x1][y1] = char(ch+2);
+    // cout << x1 << ' ' << y1 << ' ' << x[x1][y1] << "!!!!!!!" << cnt << endl;//debug
     for(int i=0;i<4;i++){
         int x2 = x1+d[i][0];
         int y2 = y1+d[i][1];
@@ -41,6 +42,7 @@ void dfs2(int x1, int y1,char ch){
 }
 
 int main(){
+    int flag = 1;
     while(cin>>h>>w&&h!=0&&w!=0){
         cnt = 0;
         result.clear();
@@ -59,20 +61,20 @@ int main(){
             }
             x[i] += '0';
         }
-        for(int i=0;i<h+2;i++){
-            for(int j=0;j<x[0].length();j++){
-                cout << x[i][j] << ' ';
-            }
-            cout <<endl;
-        }
-        cout <<endl;
+        // for(int i=0;i<h+2;i++){
+        //     for(int j=0;j<x[0].length();j++){
+        //         cout << x[i][j] << ' ';
+        //     }
+        //     cout <<endl;
+        // }
+        // cout <<endl;
         dfs(0,0);
-        for(int i=0;i<h+2;i++){
-            for(int j=0;j<x[0].length();j++){
-                cout << x[i][j] << ' ';
-            }
-            cout <<endl;
-        }
+        // for(int i=0;i<h+2;i++){
+        //     for(int j=0;j<x[0].length();j++){
+        //         cout << x[i][j] << ' ';
+        //     }
+        //     cout <<endl;
+        // }
         for(int i=0;i<h+2;i++){
             for(int j=0;j<x[0].length();j++){
                 if(x[i][j]=='1'){
@@ -83,8 +85,11 @@ int main(){
             }
         }
         sort(result.begin(), result.end());
+        cout << "Case " << flag++ << ": ";
         cout << result << endl;
     }
 
     return 0;
 }
+
+//https://vjudge.net/problem/UVA-1103
