@@ -34,7 +34,7 @@ void Dijkstra(){
 		q.pop();
 		int u = temp.point;
 		int s = temp.s;
-		if(used[u][s]==1){
+		if(dist[u][1]<temp.dist){
 			continue;
 		}
 		used[u][s] = 1;
