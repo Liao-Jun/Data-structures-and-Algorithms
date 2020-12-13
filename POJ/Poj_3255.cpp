@@ -1,73 +1,69 @@
 #include <iostream>
 #include <vector>
-#include <cstring>
 #include <queue>
+#include <string.h>
+#include <stdio.h>
+#include <algorithm>
 using namespace std;
-
-const int INF = 0x3f3f3f3f;
-const int M = 5e3+10;
-
-struct node{
-	int v,cost;
-	node(int _v, int _cost):v(_v),cost(_cost){};
+const int maxn=5005;
+const int inf=1e9;
+int N,R;
+struct edge
+{
+    int to,cost;
 };
-
-struct Node{
-	int point,dist,s;
-	Node(int _point, int _dist,int _s):point(_point),dist(_dist),s(_s){};
-	bool operator<(const Node &a) const{
-		return dist>a.dist;
-	}
-};
-
-int dist[M][2];
-int used[M][2];
-int V;
-vector<node> e[M];
-
-void Dijkstra(){
-	priority_queue<Node> q;
-	dist[1][0] = 0;
-	q.push(Node(1,0,0));
-	while(!q.empty()){
-		Node temp = q.top();
-		q.pop();
-		int u = temp.point;
-		int s = temp.s;
-		if(dist[u][1]<temp.dist){
-			continue;
-		}
-		used[u][s] = 1;
-		for(int i=0;i<e[u].size();i++){
-			int v = e[u][i].v;
-			int cost = e[u][i].cost;
-			if(cost+dist[u][0]<dist[v][0]){
-				dist[v][1] = dist[v][0];
-				dist[v][0] = cost+dist[u][0];
-				q.push(Node(v,dist[v][0],0));
-				q.push(Node(v,dist[v][1],1));
-			}else if(cost+dist[u][0]<dist[v][1]&&cost+dist[u][0]>dist[v][0]){
-				dist[v][1] = cost+dist[u][0];
-				q.push(Node(v,dist[v][1],1));
-			}
-		}
-	}
+typedef pair<int ,int> P ;///first 是从1到second的最短路 second 是路口标号
+vector<edge>G[maxn];///邻接表
+int dist[maxn];///最短路
+int dist2[maxn];///次短路
+void solve()
+{
+    priority_queue<P ,vector<P>,greater<P> >que;
+    fill(dist,dist+N,inf);
+    fill(dist2,dist2+N,inf);
+    dist[0]=0;
+    //dist2[0]=0;
+    que.push(P(0,0));
+    while(!que.empty())
+    {
+        P p=que.top();///优先队列 ，用.top
+        que.pop();
+        int v=p.second ,d=p.first;
+        if(dist2[v]<d)continue;
+        for(int i=0; i<G[v].size(); i++)
+        {
+            edge e=G[v][i];
+            int d2=d+e.cost;
+            if(dist[e.to]>d2)
+            {
+                swap(dist[e.to],d2);
+                que.push(P(dist[e.to],e.to));
+            }
+            if(dist2[e.to]>d2&&dist[e.to]<d2)
+            {
+                dist2[e.to]=d2;
+                que.push(P(dist2[e.to],e.to));
+            }
+        }
+    }
+    printf("%d\n",dist2[N-1]);
 }
-
-int main(){
-	int n,r;
-	cin >> n >> r;
-	int x,y,z;
-	V = n;
-	memset(dist,INF,sizeof(dist));
-	memset(used,0,sizeof(used));
-	for(int i=1;i<=r;i++){
-		cin >> x >> y >> z;
-		e[x].push_back(node(y,z));
-		e[y].push_back(node(x,z));
-	}
-	Dijkstra();
-	cout << dist[V][1] << endl;
-
-	return 0;
+int main()
+{
+    int from;
+    while(cin>>N>>R)
+    {
+        edge now;
+        for(int i=0;i<R;i++)
+        {
+            cin>>from>>now.to>>now.cost;
+            from--;
+            now.to--;///标号从  0-N-1！！
+            G[from].push_back(now);
+            swap(now.to,from);
+            G[from].push_back(now);
+        }
+        solve();
+    }
+    return 0;
 }
