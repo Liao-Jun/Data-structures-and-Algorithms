@@ -42,6 +42,7 @@ void solve()
             if(dist2[e.to]>d2&&dist[e.to]<d2)
             {
                 dist2[e.to]=d2;
+                que.push(P(dist[e.to],e.to));
                 que.push(P(dist2[e.to],e.to));
             }
         }
