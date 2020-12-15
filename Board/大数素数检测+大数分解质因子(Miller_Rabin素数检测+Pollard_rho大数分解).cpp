@@ -1,3 +1,17 @@
+// Problem:
+// 给定一个大整数，您需要找出它是否是质数。
+// 输入值
+// 第一行包含测试用例T的数量（1 <= T <= 20），随后的T行分别包含整数N（2 <= N <2 54）。
+// 输出量
+// 对于每个测试用例，如果N是素数，则输出包含单词“ Prime”的行，否则，输出包含最小素数N的行。
+// INPUT
+// 2
+// 5
+// 10
+// OUTPUT
+// Prime
+// 2
+
 #include <iostream>
 #include <stdio.h>
 #include <algorithm>
@@ -59,14 +73,14 @@ bool Miller_Rabin(ll n) {//米勒罗宾素数检测
 	return true;
 }
 
-ll gcd(ll a, ll b){
+ll gcd(ll a, ll b){//辗转相除法
     if(b==0){
         return a>0?a:-a;
     }
     gcd(b,a%b);
 }
 
-ll factor[110];
+ll factor[110];//结果无序
 int cnt;
 
 ll pollard_rho(ll x,ll c){//查找因子
