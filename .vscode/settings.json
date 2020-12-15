@@ -10,5 +10,6 @@
         "string": "cpp",
         "queue": "cpp",
         "iostream": "cpp"
-    }
+    },
+    "git.ignoreLimitWarning": true
 }
