@@ -36,7 +36,6 @@ int main(){
         string s;
         unordered_set<boon, MyHush> Boon;
         for(int i=0;i<n;i++){
-            
             cin >> s;
             auto x = Boon.insert(boon(s));
             x.first->count += 1;
