@@ -20,7 +20,7 @@ bool judge1(){
 bool judge2(){
     int x = (a[1]/a[0]);
     for(int i=2;i<n;i++){
-        if((a[i]/a[i-1])!=x){
+        if(a[i]*a[0]!=a[i-1]*a[1]){
             return false;
         }
     }
@@ -40,7 +40,7 @@ bool judge3(){
 int main(){
     scanf("%d",&n);
     for(int i=0;i<n;i++){
-        scanf("%lld",&a[i]);
+        scanf("%d",&a[i]);
     }
     if(judge1()||judge2()||judge3()){
         printf("YES\n");
