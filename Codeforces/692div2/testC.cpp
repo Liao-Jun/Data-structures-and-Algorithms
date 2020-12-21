@@ -1,53 +1,81 @@
 #include <iostream>
+#include <cstdio>
+#include <fstream>
 #include <algorithm>
-#include <map>
+#include <cmath>
+#include <deque>
+#include <vector>
 #include <queue>
+#include <string>
+#include <cstring>
+#include <map>
+#include <stack>
+#include <set>
+// #pragma GCC optimize("O3")
+// #pragma G++ optimize("O3")
+// #define DEBUG
 using namespace std;
 
-const int M = 2e5+10;
+typedef long long ll;
+typedef unsigned long long ull;
+typedef pair<int,int> P;
+const int INF = 0x3f3f3f3f;
+const int Mod = 1e9+7;
+const int EXP = 1e-8;
+// inline ll gcd(ll x, ll y){if(!y) return x;return gcd(y,y%x);}
+inline void debug(){printf("@@\n");}
+const int M = 1e5+10;
 int n,m;
-pair<int,int> p[M];
-map<int,int> dic;
+vector<int> v[M];
+int used[M];
 
-struct cmp{
-    bool operator()(const pair<int,int> &a,const pair<int,int> &b){
-        return (dic[a.first]+dic[a.second])<(dic[b.first]+dic[b.second]);
+bool dfs(int x){
+    queue<int> q;
+    q.push(x);
+    used[x] = 2;
+    while(!q.empty()){
+        int s = q.front();
+        q.pop();
+        if(v[s][0]==x) return true;
+        if(used[v[s][0]]==1){
+            q.push(v[s][0]);
+            used[v[s][0]] = 2;
+        }
     }
-};
+    return false;
+}
 
-int main(){
+int main()
+{
+    // ios::sync_with_stdio(false);
+    // cin.tie(0);
+    // cout.tie(0);
+    #ifdef DEBUG
+       freopen("C://Users//24887//Data-structures-and-Algorithms//input.in","r",stdin);
+       freopen("C://Users//24887//Data-structures-and-Algorithms//output.out","w",stdout);
+    #endif
     int t;
     cin >> t;
     while(t--){
-        dic.clear();
-        cin >> n >> m;
-        priority_queue<pair<int,int>,vector<pair<int,int>>,cmp> q;
-        for(int i=0;i<m;i++){
-            scanf("%d%d",&p[i].first,&p[i].second);
-            dic[p[i].first] ++;
-            dic[p[i].second] ++;
-            q.push(p[i]);
-        }
-        int sum = 0;
-        while(!q.empty()){
-            pair<int,int> p1;
-            p1 = q.top();
-            q.pop();
-            if(p1.first==p1.second) continue;
-            if(dic[p1.first]==1&&dic[p1.second]==1){
+       for(int i=0;i<M;i++){
+           v[i].clear();
+       }
+       memset(used,0,sizeof(used));
+       cin >> n >> m;
+       int a,b;
+       ll sum = 0;
+       for(int i=0;i<m;i++){
+            cin >> a >> b;
+            if(a!=b){
                 sum++;
-                dic[p->second] --;
-            }else if(dic[p1.first]==1&&dic[p1.second]!=1){
-                sum++;
-                dic[p1.second] --;
-            }else if(dic[p1.first]>=1&&dic[p1.second]==1){
-                sum++;
-                dic[p1.first] --;
-            }else{
-                sum+=2;
-                dic[p1.first] --;
-                dic[p1.second] --;
+                v[a].push_back(b);
+                used[a] = 1;
             }
+        }
+       for(int i=0;i<n;i++){
+           if(used[i]==1&&dfs(i)){
+               sum++;
+           }
         }
         cout << sum << endl;
     }
