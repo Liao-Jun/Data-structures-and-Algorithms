@@ -10,7 +10,8 @@
         "string": "cpp",
         "queue": "cpp",
         "iostream": "cpp",
-        "xutility": "cpp"
+        "xutility": "cpp",
+        "utility": "cpp"
     },
     "git.ignoreLimitWarning": true
 }
