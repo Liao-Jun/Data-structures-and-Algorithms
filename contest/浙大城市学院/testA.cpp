@@ -24,9 +24,6 @@ const int Mod = 1e9+7;
 const int EXP = 1e-8;
 // inline ll gcd(ll x, ll y){if(!y) return x;return gcd(y,y%x);}
 inline void debug(){printf("@@\n");}
-int n;
-string a[1000+5];
-
 
 int main()
 {
@@ -37,15 +34,13 @@ int main()
         freopen("C://Users//24887//Data-structures-and-Algorithms//input.in","r",stdin);
         freopen("C://Users//24887//Data-structures-and-Algorithms//output.out","w",stdout);
     #endif
-    int t;
-    cin >> t;
-    while(t--){
-        cin >> n;
-        for(int i=0;i<n;i++){
-            cin >> a[i];
-        }
-        
+    string s;
+    cin >> s;
+    for(int i=0;i<s.length();i++){
+        if(s[i]=='5') cout << '*';
+        else cout << s[i];
     }
+    cout << endl;
 
     return 0;
 }

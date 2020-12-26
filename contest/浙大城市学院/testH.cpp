@@ -24,9 +24,9 @@ const int Mod = 1e9+7;
 const int EXP = 1e-8;
 // inline ll gcd(ll x, ll y){if(!y) return x;return gcd(y,y%x);}
 inline void debug(){printf("@@\n");}
-int n;
-string a[1000+5];
-
+int n,m;
+const int M = 1e5+10;
+int a[M];
 
 int main()
 {
@@ -38,13 +38,36 @@ int main()
         freopen("C://Users//24887//Data-structures-and-Algorithms//output.out","w",stdout);
     #endif
     int t;
-    cin >> t;
+    scanf("%d",&t);
     while(t--){
-        cin >> n;
+        scanf("%d%d",&n,&m);
+        ll sum = 0;
+        int akmax;
+        int lingmax;
+        int lingmin = 0;
+        int akmin;
         for(int i=0;i<n;i++){
-            cin >> a[i];
+            scanf("%d",&a[i]);
+            sum += (1ll*a[i]);
         }
-        
+        if(sum<=m){
+            lingmin = m-sum;
+        }
+        sort(a,a+n);
+        akmax = a[0];
+        lingmax = m - a[n-1];
+        int s = a[0];
+        for(int i=1;i<n;i++){
+            s += a[i];
+            if(s>m){
+                s -= m;
+                akmin = s;
+            }else{
+                akmin = 0;
+                break;
+            }
+        }
+        printf("%d %d\n%d %d\n",akmin,akmax,lingmin,lingmax);
     }
 
     return 0;
