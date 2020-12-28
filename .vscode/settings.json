@@ -13,5 +13,6 @@
         "xutility": "cpp",
         "utility": "cpp"
     },
-    "git.ignoreLimitWarning": true
+    "git.ignoreLimitWarning": true,
+    "C_Cpp.errorSquiggles": "Disabled"
 }
