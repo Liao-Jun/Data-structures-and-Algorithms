@@ -41,40 +41,9 @@ int main()
     while(t--){
         string s;
         cin >> s;
-        stack<char> q;
-        while(!q.empty()){
-            q.pop();
-        }
-        int flag = 0;
-        for(int i=0;i<s.length();i++){
-            if(s[i]=='(') q.push('(');
-            else if(s[i]==')'){
-                if(q.empty()){
-                    flag = 1;
-                    break;
-                }else{
-                    q.pop();
-                }
-            }else if(s[i]=='?'){
-                if(q.empty())q.push('(');
-                else if(q.top()=='?') q.push('?');
-                else if(q.top()=='(') q.push('?');
-            }
-        }
-        while(!q.empty()){
-            char x = q.top();
-            q.pop();
-            if(q.empty()){
-                flag = 1;
-            }
-            if(x=='?'){
-                q.pop();
-            }else{
-                flag = 1;
-            }
-        }
-        if(flag) cout << "NO" << endl;
-        else cout << "YES" << endl;
+        if(s[0]!=')'&&s.back()!='('&&s.length()%2==0){
+            cout << "YES" << endl;
+        }else cout << "NO" << endl;
     }
 
     return 0;
