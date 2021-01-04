@@ -1,9 +1,10 @@
 {
+    "version": "2.0.0",
     "tasks": [
         {
-            "type": "cppbuild",
-            "label": "C/C++: g++.exe build active file",
-            "command": "C:\\Mingw64\\mingw64\\bin\\g++.exe",
+            "type": "shell",
+            "label": "task g++",    //修改此项
+            "command": "C:\\MinGW\\mingw64\\bin\\g++.exe",
             "args": [
                 "-g",
                 "${file}",
@@ -11,17 +12,12 @@
                 "${fileDirname}\\${fileBasenameNoExtension}.exe"
             ],
             "options": {
-                "cwd": "C:\\Mingw64\\mingw64\\bin"
+                "cwd": "C:\\MinGW\\mingw64\\bin"
             },
             "problemMatcher": [
                 "$gcc"
             ],
-            "group": {
-                "kind": "build",
-                "isDefault": true
-            },
-            "detail": "Generated task by Debugger"
+            "group": "build"
         }
-    ],
-    "version": "2.0.0"
+    ]
 }
