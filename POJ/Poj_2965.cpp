@@ -26,18 +26,50 @@ const int Mod = 1e9+7;
 const int EXP = 1e-8;
 // inline ll gcd(ll x, ll y){if(y==0) return x;return gcd(y,x%y);}//x>y
 inline void debug(){printf("@@\n");}
-int a[5][5],tmp[5][5],b[5][5];
-int check(int x, int y){
-    int sum = a[x][y];
+int a[5][5];
+int step = INF;
+int changex1[20];
+int changey1[20];
+int rex[20];
+int rey[20];
+bool check(){
     for(int i=0;i<4;i++){
-        int x11 = x;
-        int y11 = i;
-        sum += tmp[x11][y11];
-        x11 = i;
-        y11 = y;
-        sum += tmp[x11][y11];
+        for(int j=0;j<4;j++){
+            if(a[i][j]%2==1) return false;
+        }
     }
-    return sum%2;
+    return true;
+}
+
+void change(int x, int y){
+    for(int i=0;i<4;i++){
+        a[i][y] ^= 1;
+        a[x][i] ^= 1;
+    }
+    a[x][y] ^= 1;
+}
+
+void dfs(int m, int s){
+    if(check()){
+        if(s<step){
+            step = s;
+            for(int i=0;i<step;i++){
+                rex[i] = changex1[i];
+                rey[i] = changey1[i];
+            }
+        }
+        return;
+    }
+    if(m>15) return;
+    int x = m/4;
+    int y = m%4;
+    dfs(m+1,s);
+    change(x,y);
+    changex1[s] = x;
+    changey1[s] = y;
+    dfs(m+1,s+1);
+    change(x,y);
+    return;
 }
 
 int main()
@@ -49,51 +81,23 @@ int main()
         freopen("C://Users//24887//Data-structures-and-Algorithms//input.in","r",stdin);
         freopen("C://Users//24887//Data-structures-and-Algorithms//output.out","w",stdout);
     #endif
-    string s[5];
     for(int i=0;i<4;i++){
-        cin >> s[i];
+        string s;
+        cin >> s;
         for(int j=0;j<4;j++){
-            if(s[i][j]=='-') a[i][j] = 0;
-            else a[i][j] = 1;
+            if(s[j]=='+') a[i][j] = 1;
+            else a[i][j] = 0;
         }
     }
-    int cnt = INF;
-    for(int i=0;i<(1<<4);i++){
-        memset(tmp,0,sizeof(tmp));
-        int res = 0;
-        for(int j=0;j<4;j++){
-            tmp[0][j] = i>>j&1;
-            if(tmp[0][j]==1) res++;
-        }
-        for(int j=1;j<4;j++){
-            for(int k=0;k<4;k++){
-                if(check(j,k)==1){
-                    tmp[j][k] = 1;
-                    res++;
-                }
-            }
-        }
-        for(int j=0;j<4;j++){
-            for(int k=0;k<4;k++){
-                if(check(j,k)==1){
-                    res = INF;
-                }
-            }
-        }
-        if(res<cnt){
-            cnt = res;
-            for(int j=0;j<4;j++){
-                for(int k=0;k<4;k++){
-                    b[i][j] = tmp[i][j];
-                }
-            }
-        }
-    }
-    for(int i=0;i<4;i++){
-        for(int j=0;j<4;j++){
-            if(b[i][j]==1) cout << i+1 << ' ' << j+1 << endl;
-        }
+    memset(changex1,0,sizeof(changex1));
+    memset(changey1,0,sizeof(changey1));
+    dfs(0,0);
+    cout << step << endl;
+    for(int i=0;i<step;i++){
+        cout << rex[i]+1 << ' ' << rey[i]+1 << endl;
     }
 
     return 0;
 }
+
+//https://vjudge.net/problem/POJ-2965
