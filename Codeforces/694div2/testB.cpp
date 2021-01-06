@@ -26,6 +26,9 @@ const int Mod = 1e9+7;
 const int EXP = 1e-8;
 // inline ll gcd(ll x, ll y){if(y==0) return x;return gcd(y,x%y);}//x>y
 inline void debug(){printf("@@\n");}
+const int M = 1e5+10;
+ll n,x;
+ll a[M];
 
 int main()
 {
@@ -36,46 +39,35 @@ int main()
         freopen("C://Users//24887//Data-structures-and-Algorithms//input.in","r",stdin);
         freopen("C://Users//24887//Data-structures-and-Algorithms//output.out","w",stdout);
     #endif
-    int t,n,a;
-    char s[50];
+    int t;
     cin >> t;
     while(t--){
-        cin >> n;
-        int cnt = 0;
-        int res = 0;
+        cin >> n >> x;
+        int Min = INF;
+        int point = 0;
+        ll sum = 0;
         for(int i=0;i<n;i++){
-            cin >> a;
-            while(res<a){
-                s[cnt++] = '(';
-                res++;
+            cin >> a[i];
+            ll y = a[i];
+            int cnt = 1;
+            while(y%x==0){
+                cnt++;
+                y /= x;
             }
-            s[cnt++] = ')';
-        }
-        vector<int> v;
-        for(int i=0;i<cnt;i++){
-            if(s[i]==')'){
-                int sum = 1;
-                for(int j=i-1;j>=0;--j){
-                    if(s[j]==')'){
-                        sum++;
-                    }else if(s[j]=='('){
-                        v.push_back(sum);
-                        s[j] = '#';
-                        break;
-                    }
-                }
+            if(Min>cnt){
+                Min = cnt;
+                point = i;
             }
         }
-        for(int i=0;i<v.size();i++){
-            if(i==v.size()-1){
-                cout << v[i] << endl;
-                break;
+        for(int i=0;i<n;i++){
+            if(i<point){
+                sum += (a[i]*(Min+1));
+            }else{
+                sum += (a[i]*(Min));
             }
-            cout << v[i] << ' ';
         }
+        cout << sum << endl;
     }
 
     return 0;
 }
-
-//https://vjudge.net/problem/POJ-1068

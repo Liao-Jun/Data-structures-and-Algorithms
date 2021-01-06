@@ -26,6 +26,9 @@ const int Mod = 1e9+7;
 const int EXP = 1e-8;
 // inline ll gcd(ll x, ll y){if(y==0) return x;return gcd(y,x%y);}//x>y
 inline void debug(){printf("@@\n");}
+const int M = 1e5+10;
+ll n,x;
+ll a;
 
 int main()
 {
@@ -36,46 +39,21 @@ int main()
         freopen("C://Users//24887//Data-structures-and-Algorithms//input.in","r",stdin);
         freopen("C://Users//24887//Data-structures-and-Algorithms//output.out","w",stdout);
     #endif
-    int t,n,a;
-    char s[50];
+    int t;
     cin >> t;
     while(t--){
-        cin >> n;
-        int cnt = 0;
-        int res = 0;
-        for(int i=0;i<n;i++){
+        cin >> n >> x;
+        ll Max = 0;
+        ll Min = 0;
+        ll sum = 0;
+        for(ll i=0;i<n;i++){
             cin >> a;
-            while(res<a){
-                s[cnt++] = '(';
-                res++;
-            }
-            s[cnt++] = ')';
+            Max += (a+x-1)/x;
+            sum += a;
         }
-        vector<int> v;
-        for(int i=0;i<cnt;i++){
-            if(s[i]==')'){
-                int sum = 1;
-                for(int j=i-1;j>=0;--j){
-                    if(s[j]==')'){
-                        sum++;
-                    }else if(s[j]=='('){
-                        v.push_back(sum);
-                        s[j] = '#';
-                        break;
-                    }
-                }
-            }
-        }
-        for(int i=0;i<v.size();i++){
-            if(i==v.size()-1){
-                cout << v[i] << endl;
-                break;
-            }
-            cout << v[i] << ' ';
-        }
+        Min = (sum+x-1)/x;
+        cout << Min << ' ' << Max << endl;
     }
 
     return 0;
 }
-
-//https://vjudge.net/problem/POJ-1068
