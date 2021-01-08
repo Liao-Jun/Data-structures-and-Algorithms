@@ -5,7 +5,7 @@
 using namespace std;
 const int n=1e6+5;
 int a[1000010];
-void Eratosthenes_prime()
+void Eratosthenes_prime()//a[i]==0为素数
 {
     int m=sqrt(n+0.5);
     for(int i=2;i<m;i++)

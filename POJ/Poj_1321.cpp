@@ -1,0 +1,71 @@
+#include <iostream>
+#include <cstdio>
+#include <fstream>
+#include <algorithm>
+#include <cmath>
+#include <deque>
+#include <vector>
+#include <queue>
+#include <string>
+#include <cstring>
+#include <map>
+#include <stack>
+#include <set>
+#pragma GCC optimize("O3")
+#pragma G++ optimize("O3")
+#define endl '\n'
+#define PI acos(-1)
+// #define DEBUG
+using namespace std;
+
+typedef long long ll;
+typedef unsigned long long ull;
+typedef pair<int,int> P;
+const int INF = 0x3f3f3f3f;
+const int Mod = 1e9+7;
+const int EXP = 1e-8;
+// inline ll gcd(ll x, ll y){if(y==0) return x;return gcd(y,x%y);}//x>y
+inline void debug(){printf("@@\n");}
+int n,k;
+string s[10];
+int used[10];
+int cnt = 0;
+void dfs(int a,int b){
+    if(b==k){
+        cnt ++;
+        return;
+    }
+    if(a>=n) return;
+    for(int i=0;i<n;i++){
+        if(!used[i]&&s[a][i]=='#'){
+            used[i] = 1;
+            dfs(a+1,b+1);
+            used[i] = 0;
+        }
+    }
+    dfs(a+1,b);
+}
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(0);
+    cout.tie(0);
+    #ifdef DEBUG
+        freopen("C://Users//24887//Data-structures-and-Algorithms//input.in","r",stdin);
+        freopen("C://Users//24887//Data-structures-and-Algorithms//output.out","w",stdout);
+    #endif
+    while(cin>>n>>k&&!(n==-1&&k==-1)){
+        for(int i=0;i<n;i++){
+            cin >> s[i];
+        }
+        memset(used,0,sizeof(used));
+        cnt = 0;
+        dfs(0,0);
+        cout << cnt << endl;
+    }
+
+    return 0;
+}
+
+//https://vjudge.net/problem/POJ-1321
