@@ -97,6 +97,7 @@ void dbfs(){
                     while(st!=S){
                         cout << dic1[child[st].second];
                         st = child[st].first;
+                        cout << st << '&' << endl;//debug
                     }
                     return;
                 }
