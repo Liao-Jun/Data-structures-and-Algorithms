@@ -26,63 +26,83 @@ const int Mod = 1e9+7;
 const int EXP = 1e-8;
 // inline ll gcd(ll x, ll y){if(y==0) return x;return gcd(y,x%y);}//x>y
 inline void debug(){printf("@@\n");}
-string S = "12345678x";
 string s;
-map<string,int> dic;
-vector<char> v;
-map<string,pair<string,char>> pre;
+int a,b;
+string S = "12345678x";
+int dic[][2] = {{1,0},{-1,0},{0,1},{0,-1}};
+char dic1[] = {'r','l','d','u'};
+map<string,int> used;
+map<string,int> state;
+map<string,pair<string,int>> pre,child;
 struct node{
     string s;
     int x,y;
-    node(string _s, int _x, int _y){
+    node(string _s = "1", int _x = 0, int _y = 0){
         s = _s;
         x = _x;
         y = _y;
     }
 };
-int d[][2] = {{1,0},{-1,0},{0,1},{0,-1}};
-char dc[] = {'r','l','d','u'};
-int bfs(){
-    queue<node> q;
-    int t = 0;
-    for(int i=0;i<9;i++){
-        if(s[i]=='x'){
-            t = i;
-            break;
+vector<int> v;
+void dbfs(){
+    queue<node> q1;
+    queue<node> q2;
+    q1.push(node(s,a,b));
+    q2.push(node(S,2,2));
+    state[s] = 1;
+    state[S] = 2;
+    used[s] = 1;
+    used[S] = 1;
+    while(!(q1.empty())&&!(q2.empty())){
+        int flag = 0;
+        node N;
+        if(q1.size()<q2.size()){
+            N = q1.front();
+            q1.pop();
+        }else{
+            N = q2.front();
+            q2.pop();
+            flag = 1;
         }
-    }
-    q.push(node(s,t/3,t%3));
-    dic[s] = 1;
-    while(!q.empty()){
-        node N = q.front();
-        q.pop();
-        string st = N.s;
-        if(st==S){
-            while(st!=S){
-                v.push_back(pre[st].second);
-                st = pre[st].first;
-            }
-            return INF;
-        }
-        cout << '#' << N.x << ' ' << N.y << endl;//debug
         for(int i=0;i<4;i++){
-            string sc = st;
-            int x = N.x+d[i][0];
-            int y = N.y+d[i][1];
-            if(x>=0&&x<=2&&y>=0&&y<=2){
-                cout << '@' << x << ' ' << y << endl;//debug
-                swap(sc[N.x*3+N.y],sc[x*3+y]);
-                cout << sc << endl;//debug
-                if(dic[sc]==0){
-                    q.push(node(sc,x,y));
-                    dic[sc] = 1;
-                    pre[sc].first = st;
-                    pre[sc].second = dc[i];
+            string st = N.s;
+            int x = N.x+dic[i][0];
+            int y = N.y+dic[i][1];
+            if(x>=0&&x<3&&y>=0&&y<3){
+                swap(st[x*3+y],st[N.x*3+N.y]);
+                if(!used.count(st)){
+                    used[st] = 1;
+                    state[st] = state[N.s];
+                    if(flag==1){
+                        q2.push(node(st,x,y));
+                        pre[st].first = N.s;
+                        pre[st].second = i;
+                    }else{
+                        q1.push(node(st,x,y));
+                        child[st].first = N.s;
+                        child[st].second = i;
+                    }
+                }else if(state[st]+state[N.s]==3){
+                    string st = N.s;
+                    while(st!=s){
+                        v.push_back(pre[st].second);
+                        st = pre[st].first;
+                    }
+                    cout << dic1[pre[s].second];
+                    while(v.size()){
+                        cout << dic1[v.back()];
+                        v.pop_back();
+                    }
+                    st = child[N.s].first;
+                    while(st!=S){
+                        cout << dic1[child[st].second];
+                        st = child[st].first;
+                    }
+                    return;
                 }
             }
         }
     }
-    return 0;
 }
 
 int main()
@@ -102,22 +122,18 @@ int main()
             cin >> c;
             s.append(c);
         }
-        cout << s << endl;//debug
-        v.clear();
-        pre.clear();
-        dic.clear();
-        int cnt = bfs();
-        cout << '&' << cnt << endl;//debug
-        if(cnt==INF){
-            while(v.size()){
-                cout << v.back();
-                v.pop_back();
+        for(int i=0;i<9;i++){
+            if(s[i]=='x'){
+                a = i/3;
+                b = i%3;
             }
-            cout << endl;
-        }else if(cnt==0){
-            cout << "unsolvable" << endl;
         }
-        break;//debug
+        state.clear();
+        pre.clear();
+        child.clear();
+        used.clear();
+        v.clear();
+        dbfs();
     }
 
     return 0;
