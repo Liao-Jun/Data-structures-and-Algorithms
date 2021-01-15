@@ -13,7 +13,7 @@
 #include <set>
 #pragma GCC optimize("O3")
 #pragma G++ optimize("O3")
-#define endl '\n'
+// #define endl '\n'
 #define PI acos(-1)
 // #define DEBUG
 using namespace std;
@@ -26,80 +26,54 @@ const int Mod = 1e9+7;
 const int EXP = 1e-8;
 // inline ll gcd(ll x, ll y){if(y==0) return x;return gcd(y,x%y);}//x>y
 inline void debug(){printf("@@\n");}
+const int M = 362885;
 string s;
 int a,b;
-string S = "12345678x";
-int dic[][2] = {{1,0},{-1,0},{0,1},{0,-1}};
-char dic1[] = {'r','l','d','u'};
-map<string,int> used;
-map<string,int> state;
-map<string,pair<string,int>> pre,child;
+int used[M];
 struct node{
+    int hash,flag;
     string s;
-    int x,y;
-    node(string _s = "1", int _x = 0, int _y = 0){
+    node(string _s, int _hash, int _flag){
         s = _s;
-        x = _x;
-        y = _y;
+        hash = _hash;
+        flag = _flag;
     }
 };
-vector<int> v;
-void dbfs(){
-    queue<node> q1;
-    queue<node> q2;
-    q1.push(node(s,a,b));
-    q2.push(node(S,2,2));
-    state[s] = 1;
-    state[S] = 2;
-    used[s] = 1;
-    used[S] = 1;
-    while(!(q1.empty())&&!(q2.empty())){
-        int flag = 0;
-        node N;
-        if(q1.size()<q2.size()){
-            N = q1.front();
-            q1.pop();
-        }else{
-            N = q2.front();
-            q2.pop();
-            flag = 1;
+string pre[M];
+const int dic[][2] = {{0,1},{0,-1},{1,0},{-1,0}};
+const char dic_char[] = {'l','r','u','d'};
+const int fac[] = {1,1,2,6,24,120,720,5040,40320,362880};
+int cantor(string s){
+    int x = 0;
+    for(int i=0;i<9;i++){
+        int res = 0;
+        for(int j=i+1;j<9;j++){
+            if(s[i]>s[j]) res++;
         }
+        x += res*fac[8-i];
+    }
+    return x;
+}
+
+void bfs(){
+    queue<node> q;
+    q.push(node("123456780",46233,8));
+    used[46233] = 1;
+    while(!q.empty()){
+        node N = q.front();
+        q.pop();
         for(int i=0;i<4;i++){
-            string st = N.s;
-            int x = N.x+dic[i][0];
-            int y = N.y+dic[i][1];
-            if(x>=0&&x<3&&y>=0&&y<3){
-                swap(st[x*3+y],st[N.x*3+N.y]);
-                if(!used.count(st)){
-                    used[st] = 1;
-                    state[st] = state[N.s];
-                    if(flag==1){
-                        q2.push(node(st,x,y));
-                        pre[st].first = N.s;
-                        pre[st].second = i;
-                    }else{
-                        q1.push(node(st,x,y));
-                        child[st].first = N.s;
-                        child[st].second = i;
-                    }
-                }else if(state[st]+state[N.s]==3){
-                    string st = N.s;
-                    while(st!=s){
-                        v.push_back(pre[st].second);
-                        st = pre[st].first;
-                    }
-                    cout << dic1[pre[s].second];
-                    while(v.size()){
-                        cout << dic1[v.back()];
-                        v.pop_back();
-                    }
-                    st = child[N.s].first;
-                    while(st!=S){
-                        cout << dic1[child[st].second];
-                        st = child[st].first;
-                        cout << st << '&' << endl;//debug
-                    }
-                    return;
+            int x = N.flag/3+dic[i][0];
+            int y = N.flag%3+dic[i][1];
+            if(x>=0&&x<3&&y>=0&y<3){
+                int flag = 3*x+y;
+                string st = N.s;
+                swap(st[flag],st[N.flag]);
+                int can = cantor(st);
+                if(used[can]==0){
+                    q.push(node(st,can,flag));
+                    used[can] = 1;
+                    pre[can] = pre[N.hash]+dic_char[i];
                 }
             }
         }
@@ -116,6 +90,8 @@ int main()
         freopen("C://Users//24887//Data-structures-and-Algorithms//output.out","w",stdout);
     #endif
     string c;
+    memset(used,0,sizeof(used));
+    bfs();
     while(cin >> c){
         s.clear();
         s.append(c);
@@ -125,17 +101,22 @@ int main()
         }
         for(int i=0;i<9;i++){
             if(s[i]=='x'){
+                s[i] = '0';
                 a = i/3;
                 b = i%3;
             }
         }
-        state.clear();
-        pre.clear();
-        child.clear();
-        used.clear();
-        v.clear();
-        dbfs();
+        int can = cantor(s);
+        if(used[can]==0){
+            cout << "unsolvable" << endl;
+        }else{
+            string st = pre[can];
+            reverse(st.begin(), st.end());
+            cout << st << endl;
+        }
     }
 
     return 0;
 }
+
+//https://vjudge.net/problem/HDU-1043
