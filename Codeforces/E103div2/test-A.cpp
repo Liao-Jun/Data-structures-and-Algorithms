@@ -29,8 +29,7 @@ const int Mod = 1e9+7;
 const int EXP = 1e-8;
 // inline ll gcd(ll x, ll y){if(y==0) return x;return gcd(y,x%y);}//x>y
 inline void debug(){printf("@@\n");}
-int a[105][105];
-int dic[][2] = {{0,1},{1,0},{0,-1},{-1,0}};
+ll n,k;
 
 int main()
 {
@@ -41,15 +40,20 @@ int main()
         freopen("C://Users//24887//Data-structures-and-Algorithms//input.in","r",stdin);
         freopen("C://Users//24887//Data-structures-and-Algorithms//output.out","w",stdout);
     #endif
-    int n,m;
-    cin >> n >> m;
-    int count = 1;
-    int d[] = {m-1,n-1,0,0};
-    int flag = 0;
-    int x = 0, y = 0;
-    while(count<=n*m){
-        if(flag==0){
-            
+    int t;
+    cin >> t;
+    while(t--){
+        cin >> n >> k;
+        if(n>k){
+            if(n%k==0) cout << 1 << endl;
+            else cout << 2 << endl;
+        }
+        else if(n==k) cout << 1 << endl;
+        else{
+            ll x = k/n;
+            ll y = k%n;
+            if(y==0) cout << x << endl;
+            else cout << x+1 << endl;
         }
     }
 
