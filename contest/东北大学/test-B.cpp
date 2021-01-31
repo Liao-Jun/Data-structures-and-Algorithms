@@ -29,9 +29,10 @@ const int Mod = 1e9+7;
 const int EXP = 1e-8;
 // inline ll gcd(ll x, ll y){if(y==0) return x;return gcd(y,x%y);}//x>y
 inline void debug(){printf("@@\n");}
-struct node{
-    int g,id,sex;
-};
+int n,k;
+const int M = 1e5+10;
+int Hash[M];
+ll sum[M];
 
 int main()
 {
@@ -42,35 +43,22 @@ int main()
         freopen("C://Users//24887//Data-structures-and-Algorithms//input.in","r",stdin);
         freopen("C://Users//24887//Data-structures-and-Algorithms//output.out","w",stdout);
     #endif
-    int n;
-    unordered_map<string,node> dic;
-    unordered_set<string> se1[105];
-    cin >> n;
-    string s1;
-    int a,b,c;
-    for(int i=0;i<n;i++){
-        cin >> s1 >> a >> b >> c;
-        dic[s1].g = a;
-        dic[s1].sex = b;
-        dic[s1].id = c;
-        se1[a].insert(s1);
-    }
-    int m;
-    cin >> m;
     int t;
-    for(int i=0;i<m;i++){
-        cin >> t;
-        if(t==1){
-            cin >> s1;
-            cout << dic[s1].g << ' ' << dic[s1].id << ' ' << dic[s1].sex << endl;
-        }else if(t==2){
-            cin >> a;
-            if(!se1[a].empty()){
-                for(auto it:se1[a]){
-                    cout << it << endl;
-                }
-            }
+    cin >> t;
+    while(t--){
+        memset(Hash,-1,sizeof(Hash));
+        memset(sum,0,sizeof(sum));
+        Hash[0] = 0;
+        cin >> n >> k;
+        int Max = 0;
+        for(int i=1;i<=n;i++){
+            cin >> sum[i];
+            sum[i] = (sum[i]+sum[i-1])%k;
+            if(Hash[sum[i]]==-1) Hash[sum[i]] = i;
+            else Max = max(Max,i-Hash[sum[i]]);
         }
+        if(Max) cout << Max << endl;
+        else cout << -1 << endl;
     }
 
     return 0;
