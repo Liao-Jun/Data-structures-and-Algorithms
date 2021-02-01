@@ -29,20 +29,8 @@ const int Mod = 1e9+7;
 const int EXP = 1e-8;
 // inline ll gcd(ll x, ll y){if(y==0) return x;return gcd(y,x%y);}//x>y
 inline void debug(){printf("@@\n");}
-int n;
-struct node{
-    int a,b,c,id;
-};
-node x[305];
-bool cmp(const node &a, const node &b){
-    int x = a.a+a.b+a.c;
-    int y = b.a+b.b+b.c;
-    if(x==y){
-        if(a.a==b.a){
-            return a.id<b.id;
-        }else return a.a>b.a;
-    }else return x>y;
-}
+int n,m;
+int a[1005];
 
 int main()
 {
@@ -53,15 +41,30 @@ int main()
         freopen("C://Users//24887//Data-structures-and-Algorithms//input.in","r",stdin);
         freopen("C://Users//24887//Data-structures-and-Algorithms//output.out","w",stdout);
     #endif
-    cin >> n;
+    memset(a,0,sizeof(a));
+    cin >> n >> m;
+    int t;
     for(int i=0;i<n;i++){
-        cin >> x[i].a >> x[i].b >> x[i].c;
-        x[i].id = i+1;
+        cin >> t;
+        if(t<=1000) a[t] ++;
     }
-    sort(x,x+n,cmp);
-    for(int i=0;i<5;i++){
-        cout << x[i].id << ' ' << (x[i].a+x[i].b+x[i].c) << endl;
+    int flag = 1;
+    for(int i=1;i<m;i++){
+        if(a[i]>0){
+            if(i==m-i){
+                if(a[i]>=2){
+                    cout << i << ' ' << i << endl;
+                    flag = 0;
+                    break;
+                }
+            }else if(a[m-i]>0){
+                cout << i << ' ' << m-i << endl;
+                flag = 0;
+                break;
+            }
+        }
     }
+    if(flag) cout << "No Solution\n";
 
     return 0;
 }

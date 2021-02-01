@@ -29,20 +29,6 @@ const int Mod = 1e9+7;
 const int EXP = 1e-8;
 // inline ll gcd(ll x, ll y){if(y==0) return x;return gcd(y,x%y);}//x>y
 inline void debug(){printf("@@\n");}
-int n;
-struct node{
-    int a,b,c,id;
-};
-node x[305];
-bool cmp(const node &a, const node &b){
-    int x = a.a+a.b+a.c;
-    int y = b.a+b.b+b.c;
-    if(x==y){
-        if(a.a==b.a){
-            return a.id<b.id;
-        }else return a.a>b.a;
-    }else return x>y;
-}
 
 int main()
 {
@@ -53,15 +39,22 @@ int main()
         freopen("C://Users//24887//Data-structures-and-Algorithms//input.in","r",stdin);
         freopen("C://Users//24887//Data-structures-and-Algorithms//output.out","w",stdout);
     #endif
-    cin >> n;
-    for(int i=0;i<n;i++){
-        cin >> x[i].a >> x[i].b >> x[i].c;
-        x[i].id = i+1;
+    string s1,s2;
+    cin >> s1 >> s2;
+    int a[105];
+    memset(a,0,sizeof(a));
+    int cnt = 0;
+    for(int i=0;i<s1.length()-1;i++){
+        if(s1[i]!=s2[i]&&a[i]%2==0){
+            a[i] ++;
+            a[i+1] ++;
+        }else if(s1[i]==s2[i]&&a[i]%2==1){
+            a[i] ++;
+            a[i+1] ++;
+        }
+        cnt += a[i];
     }
-    sort(x,x+n,cmp);
-    for(int i=0;i<5;i++){
-        cout << x[i].id << ' ' << (x[i].a+x[i].b+x[i].c) << endl;
-    }
+    cout << cnt/2 << endl;
 
     return 0;
 }
