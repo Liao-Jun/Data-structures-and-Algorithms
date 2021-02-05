@@ -39,27 +39,20 @@ int main()
         freopen("C://Users//24887//Data-structures-and-Algorithms//input.in","r",stdin);
         freopen("C://Users//24887//Data-structures-and-Algorithms//output.out","w",stdout);
     #endif
-    int k;
-    cin >> k;
-    int i;
-    for(i=1;i*i<=k;i++){}
-    i--;
-    k = k-i*i;
-    if(k==0) cout << '(';
-    for(int j=0;j<i;j++){
-        cout << '(';
-    }
-    while(i){
-        if(k%i==0){
-            for(int j=0;j<k/i;j++){
-                cout << '(';
+    int n;
+    cin >> n;
+    int x = 0;
+    for(int i=0;i<n;i++){
+        for(int j=0;j<n;j++){
+            if(i%2==0&&j==0) cout << 0;
+            else if(i%2==1&&j==0) cout << 1;
+            else{
+                x ^= 1;
+                cout << x;
             }
         }
-        k %= i;
-        cout << ')';
-        i--;
+        cout << endl;
     }
-    cout << endl;
 
     return 0;
 }
