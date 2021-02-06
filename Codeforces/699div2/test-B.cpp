@@ -30,14 +30,20 @@ const int Mod = 1e9+7;
 const int EXP = 1e-8;
 // inline ll gcd(ll x, ll y){if(y==0) return x;return gcd(y,x%y);}//x>y
 inline void debug(){printf("@@\n");}
-int x(int n){
-    int sum = 0;
-    while(n>10){
-        sum += (n%10);
-        n/=10;
+int n,k;
+struct node{
+    int id,h;
+};
+
+struct cmp{
+    bool operator()(const node &a, const node &b){
+        if(a.h!=b.h){
+            return a.h>b.h;
+        }else{
+            return a.id<b.id;
+        }
     }
-    return sum + n;
-}
+};
 
 int main()
 {
@@ -48,14 +54,31 @@ int main()
         freopen("C://Users//24887//Data-structures-and-Algorithms//input.in","r",stdin);
         freopen("C://Users//24887//Data-structures-and-Algorithms//output.out","w",stdout);
     #endif
-    int n;
-    cin >> n;
-    int x11 = x(n);
-    for(int i=n+1;i<3000;i++){
-        if(x(i)==x11){
-            cout << i << endl;
-            break;
+    int t;
+    cin >> t;
+    while(t--){
+        cin >> n >> k;
+        priority_queue<node, vector<node>, cmp> q;
+        for(int i=0;i<n;i++){
+            node N;
+            cin >> N.h;
+            N.id = i+1;
+            q.push(N);
         }
+        int flag = 0;
+        while(k--){
+            node N = q.top();
+            q.pop();
+            if(N.id==n){
+                flag = 1;
+                break;
+            }
+            if(k==0) N.h--;
+            N.h++;
+            q.push(N);
+        }
+        if(flag) cout << -1 << endl;
+        else cout << q.top().id << endl;
     }
 
     return 0;

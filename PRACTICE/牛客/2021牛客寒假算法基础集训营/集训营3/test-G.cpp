@@ -30,14 +30,13 @@ const int Mod = 1e9+7;
 const int EXP = 1e-8;
 // inline ll gcd(ll x, ll y){if(y==0) return x;return gcd(y,x%y);}//x>y
 inline void debug(){printf("@@\n");}
-int x(int n){
-    int sum = 0;
-    while(n>10){
-        sum += (n%10);
-        n/=10;
-    }
-    return sum + n;
-}
+const int M = 1e6+10;
+int n,m;
+struct node{
+    ll x;
+    vector<int> v;
+};
+node N[M];
 
 int main()
 {
@@ -48,15 +47,32 @@ int main()
         freopen("C://Users//24887//Data-structures-and-Algorithms//input.in","r",stdin);
         freopen("C://Users//24887//Data-structures-and-Algorithms//output.out","w",stdout);
     #endif
-    int n;
-    cin >> n;
-    int x11 = x(n);
-    for(int i=n+1;i<3000;i++){
-        if(x(i)==x11){
-            cout << i << endl;
-            break;
+    scanf("%d%d",&n,&m);
+    for(int i=1;i<=n;i++){
+        scanf("%lld",&N[i].x);
+    }
+    int a,b;
+    for(int i=0;i<m;i++){
+        scanf("%d%d",&a,&b);
+        N[a].v.push_back(b);
+        N[b].v.push_back(a);
+        if(N[a].x>=N[b].x){
+            N[b].x = N[a].x;
+            for(auto it:N[b].v){
+                N[it].x = N[b].x;
+            }
+        }else{
+            N[a].x = N[b].x;
+            for(auto it:N[a].v){
+                N[it].x = N[a].x;
+            }
         }
     }
+    ll sum = 0;
+    for(int i=1;i<=n;i++){
+        sum += N[i].x;
+    }
+    cout << sum << endl;
 
     return 0;
 }
