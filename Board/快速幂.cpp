@@ -16,14 +16,14 @@ using namespace std;
 
 typedef long long ll;
 
-ll mpow(ll b,ll p,ll k){//a^b
+ll mpow(ll b,ll p,ll k){//b^p
     ll res = 1;
     while(p>0){
         if(p&1) res=res*b%k;
         b = b*b%k;
         p>>=1;
     }
-    return res;
+    return res%k;
 }
 
 int main(){
