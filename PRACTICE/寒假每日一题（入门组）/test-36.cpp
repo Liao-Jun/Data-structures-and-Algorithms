@@ -30,6 +30,7 @@ const int Mod = 1e9+7;
 const int EXP = 1e-8;
 // inline ll gcd(ll x, ll y){if(y==0) return x;return gcd(y,x%y);}//x>y
 inline void debug(){printf("@@\n");}
+map<char,string> dic = {{'1',"one"},{'0',"zero"},{'2',"two"},{'3',"three"},{'4',"four"},{'5',"five"},{'6',"six"},{'7',"seven"},{'8',"eight"},{'9',"nine"}};
 
 int main()
 {
@@ -40,21 +41,19 @@ int main()
         freopen("C://Users//24887//Data-structures-and-Algorithms//input.in","r",stdin);
         freopen("C://Users//24887//Data-structures-and-Algorithms//output.out","w",stdout);
     #endif
-    int A,B,L;
-    cin >> A >> B >> L;
-    double delta = INF;
-    int x,y;
-    for(int i=1;i<=L;i++){
-        for(int j=1;j<=L;j++){
-            double a = i*1.0/j;
-            double b = A*1.0/B;
-            if(a>=b&&a-b<delta){
-                x = i, y = j;
-                delta = a-b;
-            }
-        }
+    string s;
+    cin >> s;
+    int sum = 0;
+    for(auto it:s){
+        sum += it-'0';
     }
-    cout << x << ' ' << y << endl;
+    stringstream input2;
+    input2 << sum;
+    string s2;
+    input2 >> s2;
+    for(auto it:s2){
+        cout << dic[it] << ' ';
+    }
 
     return 0;
 }

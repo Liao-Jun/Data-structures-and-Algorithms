@@ -40,21 +40,21 @@ int main()
         freopen("C://Users//24887//Data-structures-and-Algorithms//input.in","r",stdin);
         freopen("C://Users//24887//Data-structures-and-Algorithms//output.out","w",stdout);
     #endif
-    int A,B,L;
-    cin >> A >> B >> L;
-    double delta = INF;
-    int x,y;
-    for(int i=1;i<=L;i++){
-        for(int j=1;j<=L;j++){
-            double a = i*1.0/j;
-            double b = A*1.0/B;
-            if(a>=b&&a-b<delta){
-                x = i, y = j;
-                delta = a-b;
-            }
-        }
+    int n;
+    cin >> n;
+    while(n%10==0){
+        n/=10;
+        if(n==0) break;
     }
-    cout << x << ' ' << y << endl;
+    int flag = 0;
+    if(n<0) flag = 1,n = -n;
+    stringstream input;
+    input << n;
+    string s;
+    input >> s;
+    if(flag==1) cout << '-';
+    reverse(s.begin(),s.end());
+    cout << s << endl;
 
     return 0;
 }

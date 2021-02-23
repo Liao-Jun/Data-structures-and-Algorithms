@@ -30,6 +30,12 @@ const int Mod = 1e9+7;
 const int EXP = 1e-8;
 // inline ll gcd(ll x, ll y){if(y==0) return x;return gcd(y,x%y);}//x>y
 inline void debug(){printf("@@\n");}
+int n;
+int a[505][505];
+bool check(int a, int b){
+    if(a>=0&&a<n&&b>=0&&b<n) return true;
+    return false;
+}
 
 int main()
 {
@@ -40,21 +46,27 @@ int main()
         freopen("C://Users//24887//Data-structures-and-Algorithms//input.in","r",stdin);
         freopen("C://Users//24887//Data-structures-and-Algorithms//output.out","w",stdout);
     #endif
-    int A,B,L;
-    cin >> A >> B >> L;
-    double delta = INF;
-    int x,y;
-    for(int i=1;i<=L;i++){
-        for(int j=1;j<=L;j++){
-            double a = i*1.0/j;
-            double b = A*1.0/B;
-            if(a>=b&&a-b<delta){
-                x = i, y = j;
-                delta = a-b;
-            }
+    cin >> n;
+    for(int i=0;i<n;i++){
+        for(int j=0;j<n;j++){
+            cin >> a[i][j];
         }
     }
-    cout << x << ' ' << y << endl;
+    int flag = 1;
+    for(int i=0;i<=2*n-2;i++){
+        if(flag==1){
+            for(int j=i;j>=0;j--){
+                int k = i-j;
+                if(check(j,k)) cout << a[j][k] << ' ';
+            }
+        }else if(flag==-1){
+            for(int j=i;j>=0;j--){
+                int k = i-j;
+                if(check(k,j)) cout << a[k][j] << ' ';
+            }
+        }
+        flag *= -1;
+    }
 
     return 0;
 }

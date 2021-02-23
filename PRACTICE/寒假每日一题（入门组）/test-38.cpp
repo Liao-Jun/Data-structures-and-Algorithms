@@ -40,21 +40,26 @@ int main()
         freopen("C://Users//24887//Data-structures-and-Algorithms//input.in","r",stdin);
         freopen("C://Users//24887//Data-structures-and-Algorithms//output.out","w",stdout);
     #endif
-    int A,B,L;
-    cin >> A >> B >> L;
-    double delta = INF;
-    int x,y;
-    for(int i=1;i<=L;i++){
-        for(int j=1;j<=L;j++){
-            double a = i*1.0/j;
-            double b = A*1.0/B;
-            if(a>=b&&a-b<delta){
-                x = i, y = j;
-                delta = a-b;
+    int a[105][105];
+    int t;
+    cin >> t;
+    memset(a,0,sizeof(a));
+    while(t--){
+        int x11,y11,x22,y22;
+        cin >> x11 >> y11 >> x22 >> y22;
+        for(int i=x11;i<x22;i++){
+            for(int j=y11;j<y22;j++){
+                a[i][j] = 1;
             }
         }
     }
-    cout << x << ' ' << y << endl;
+    int sum = 0;
+    for(int i=0;i<=100;i++){
+        for(int j=0;j<=100;j++){
+            if(a[i][j]==1) sum++;
+        }
+    }
+    cout << sum << endl;
 
     return 0;
 }
