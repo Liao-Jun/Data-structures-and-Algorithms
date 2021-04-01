@@ -3,7 +3,7 @@
 
 using namespace std;
 
-typedef long long ll;
+using ll = long long;
 const int M = 1e5+10;
 
 int n, k;
