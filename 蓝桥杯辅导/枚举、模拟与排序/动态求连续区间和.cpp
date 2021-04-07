@@ -26,7 +26,6 @@ void build(int u, int l, int r) {
         build(u<<1|1,mid + 1, r);
         push_up(u);
     }
-    cout << '@' << u << ' ' << tree[u].l << ' ' << tree[u].r << ' ' << tree[u].sum << endl;//debug
 }
 
 int quary(int u, int l, int r) {
@@ -41,7 +40,7 @@ int quary(int u, int l, int r) {
 }
 
 void modify(int u, int x, int v) {
-    if (tree[u].l == tree[u].r) tree[u].sum = v;
+    if (tree[u].l == tree[u].r) tree[u].sum += v;
     else {
         int mid = tree[u].l + tree[u].r >> 1;
         if (x <= mid) modify(u<<1, x, v);
@@ -59,7 +58,9 @@ int main() {
         int f, x, y;
         cin >> f >> x >> y;
         if (f == 0) cout << quary(1, x, y) << endl;
-        else if (f == 1) modify(1, x, y);
+        else if (f == 1) {
+            modify(1, x, y);
+        }
     }
 
     return 0;
