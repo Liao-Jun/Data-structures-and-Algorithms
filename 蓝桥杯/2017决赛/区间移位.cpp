@@ -4,50 +4,57 @@
 #include <vector>
 
 using namespace std;
-using PII = pair<int, int>;
-const int maxn = 1e5+10;
+struct node {
+    int a, b;
+};
 
-int n;
-PII p[maxn];
-vector<PII> v;
+int n, a, b;
+vector<node> v;
 
-bool cmp(const PII &a, const PII &b) {
-    return a.second < b.second;
+bool cmp(const node &a, const node &b) {
+    return a.b < b.b;
 }
 
 bool check(int mid) {
     int k = 0;
-    for (int i = 0; i < n; i ++ ) {
-        if (p[i].first - mid <= k && p[i].second + mid >= k) {
-            if (p[i].first >= k) {
-                k = p[i].second - (p[i].first - k);
-            } else {
-                k = p[i].second + (p[i].first + k);
+    vector<node> v1(v);
+    while(1) {
+        bool found = false;
+        for (int i = 0; i < v1.size(); i ++ ) {
+            if (v1[i].a - mid <= k && k <= v1[i].b + mid) {
+                found = true;
+                if (v1[i].a + mid >= k) k += (v1[i].b - v1[i].a);
+                else k = v1[i].b + mid;
+                v1.erase(v1.begin() + i);
+                break;
             }
         }
+        if (!found || k >= 20000) break;
     }
-    return k>= 10000;
+    return k >= 20000;
 }
 
 int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(0);
+    cout.tie(0);
     cin >> n;
     for (int i = 0; i < n; i ++ ) {
-        cin >> p[i].first >> p[i].second;
-        p[i].first *= 2;
-        p[i].second *= 2;
-        v.push(p[i]);
+        cin >> a >> b;
+        a *= 2;
+        b *= 2;
+        v.push_back({a, b});
     }
-    sort(v, v + n, cmp);
-    int l = -1, r = 20001;
-    while (l < r) {
+    sort(v.begin(), v.end(), cmp);
+    int l = 0, r = 20000;
+    double re = 0;
+    while (l <= r) {
         int mid = (l + r) >> 1;
-        if (check(mid)) r = mid;
+        if (check(mid)) r = mid - 1, re = mid;
         else l = mid + 1;
     }
-    if (l%2 == 0) cout << l/2 << endl;
-    else {
-        printf("%.1lf\n", l*1.0/2);
-    }
+    re /= 2.0;
+    cout << re << endl;
 
     return 0;
 }
