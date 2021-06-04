@@ -5,7 +5,7 @@ using namespace std;
 typedef long long ll;
 
 ll q_mul(ll a, ll b,ll mod){
-    ll res;
+    ll res = 0;
     while(b>0){
         if(b&1) res += a%mod;
         a = (a*2)%mod;
